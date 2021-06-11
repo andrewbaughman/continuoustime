@@ -81,7 +81,7 @@ class ViewController: UIViewController {
     }
     @IBAction func tapDetected(_ sender: UITapGestureRecognizer) {
         //print("Tap Detected")
-    }x
+    }
     @IBAction func explain(_ sender: Any) {
         if (explanation.isHidden) {
             digits_input.isHidden = true
@@ -195,7 +195,7 @@ class ViewController: UIViewController {
         if (count > 0.995 || count < 0.005) {
             direction = -direction
         }
-        count += direction
+        count += direction * 0.1
         //print(count)
         let color_modifier:CGFloat = direction * 2.5
         if (count < 0.17) {

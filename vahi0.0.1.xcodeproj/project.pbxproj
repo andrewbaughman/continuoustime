@@ -26,8 +26,8 @@
 		DD05FAA72580FA4A003786EC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DD05FAAA2580FA4A003786EC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DD05FAAC2580FA4A003786EC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DD4818C4258BFA9C00B7D4D7 /* explanation.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; name = explanation.rtf; path = ../../explanation.rtf; sourceTree = "<group>"; };
-		DD4818C7258BFECE00B7D4D7 /* explanation.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = explanation.txt; path = ../../explanation.txt; sourceTree = "<group>"; };
+		DD4818C4258BFA9C00B7D4D7 /* explanation.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; name = explanation.rtf; path = ../explanation.rtf; sourceTree = "<group>"; };
+		DD4818C7258BFECE00B7D4D7 /* explanation.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = explanation.txt; path = ../explanation.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
