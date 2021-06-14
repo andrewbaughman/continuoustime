@@ -7,37 +7,6 @@
 
 import UIKit
 
-/* https://www.hackingwithswift.com/example-code/uicolor/how-to-convert-a-hex-color-to-a-uicolor
-*   UIColor from Hex string of 9 digits. Very nice.
-*/
- extension UIColor {
-    public convenience init?(hex: String) {
-        let r, g, b, a: CGFloat
-
-        if hex.hasPrefix("#") {
-            let start = hex.index(hex.startIndex, offsetBy: 1)
-            let hexColor = String(hex[start...])
-
-            if hexColor.count == 8 {
-                let scanner = Scanner(string: hexColor)
-                var hexNumber: UInt64 = 0
-
-                if scanner.scanHexInt64(&hexNumber) {
-                    r = CGFloat((hexNumber & 0xff000000) >> 24) / 255
-                    g = CGFloat((hexNumber & 0x00ff0000) >> 16) / 255
-                    b = CGFloat((hexNumber & 0x0000ff00) >> 8) / 255
-                    a = CGFloat(hexNumber & 0x000000ff) / 255
-
-                    self.init(red: r, green: g, blue: b, alpha: a)
-                    return
-                }
-            }
-        }
-
-        return nil
-    }
-}
-
 class ViewController: UIViewController {
 
     @IBOutlet weak var stepper_base: UIStepper!
@@ -53,16 +22,15 @@ class ViewController: UIViewController {
         stepper_digits.value = 4
         conversion_ratio.text = ""
         explanation.isHidden = true
+        self.view.backgroundColor = UIColor.systemGray4
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.setUpDisplayLink()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        displayLink.remove(from: .main, forMode: RunLoop.Mode.common)
     }
     
     @IBOutlet weak var digits_lbl: UILabel!
@@ -155,90 +123,14 @@ class ViewController: UIViewController {
         let cpt_time_decimal = getDoubleMPT(left_side: getDoubleLeftSide(), right_side: getDoubleRightSide()) * cpt_factor
         return String(Int(floor(cpt_time_decimal)), radix: Int(base))
     }
-    
-//    func getCptHighPrecision(base:Double, digits:Double) -> String {
-//        let cpt_factor = getCptFactor(base: base, digits: digits)
-//        let cpt_time_decimal = String(getDoubleMPT(left_side: getDoubleLeftSide(), right_side: getDoubleRightSide()) * cpt_factor.truncatingRemainder(dividingBy: 1.0))
-//        let left = String(cpt_time_decimal[cpt_time_decimal.index(cpt_time_decimal.startIndex, offsetBy: 2)])
-//        let right = String(cpt_time_decimal[cpt_time_decimal.index(cpt_time_decimal.startIndex, offsetBy: 2)]) + String(cpt_time_decimal[cpt_time_decimal.index(cpt_time_decimal.startIndex, offsetBy: 3)]) + String(cpt_time_decimal[cpt_time_decimal.index(cpt_time_decimal.startIndex, offsetBy: 4)]) + String(cpt_time_decimal[cpt_time_decimal.index(cpt_time_decimal.startIndex, offsetBy: 5)]) + String(cpt_time_decimal[cpt_time_decimal.index(cpt_time_decimal.startIndex, offsetBy: 6)]) + String(cpt_time_decimal[cpt_time_decimal.index(cpt_time_decimal.startIndex, offsetBy: 7)])
-//
-//
-//        return right
-//    }
 
     private var base: Double = 16
     private var digits: Double = 4
     
-    
-    
-    
-    private var latestTimeUpdated:CFTimeInterval = CACurrentMediaTime()
-    private var startedTime:CFTimeInterval = CACurrentMediaTime()
-    
-    private var displayLink:CADisplayLink!
-    
-    private var count:CGFloat = 0.501
-    private var direction:CGFloat = 0.003
-    private var RED:CGFloat = 0.005
-    private var GREEN:CGFloat = 0.995
-    private var BLUE:CGFloat = 0.667
-    
-    private func setUpDisplayLink() {
-        displayLink = CADisplayLink(target: self, selector: #selector(update))
-        displayLink.preferredFramesPerSecond = 60
-        startedTime = CACurrentMediaTime()
-        displayLink.add(to: .main, forMode: RunLoop.Mode.common)
-    }
-    
     @objc private func update() {
-        let currentTime:CFTimeInterval = CACurrentMediaTime()
-        if (count > 0.995 || count < 0.005) {
-            direction = -direction
-        }
-        count += direction * 0.1
-        //print(count)
-        let color_modifier:CGFloat = direction * 2.5
-        if (count < 0.17) {
-            RED -= color_modifier / 2
-            GREEN -= color_modifier / 2
-            BLUE += color_modifier / 2
-            //print("Part 1 \(RED) \(GREEN) \(BLUE)")
-        } else if (count > 0.17 && count < 0.33) {
-            RED -= color_modifier
-            GREEN += color_modifier
-            BLUE += color_modifier
-            //print("Part 2 \(RED) \(GREEN) \(BLUE)")
-        } else if (count > 0.33 && count < 0.5) {
-            RED -= color_modifier
-            GREEN += color_modifier
-            BLUE += color_modifier
-            //print("Part 3 \(RED) \(GREEN) \(BLUE)")
-        } else if (count > 0.5 && count < 0.67) {
-            RED += color_modifier
-            GREEN -= color_modifier
-            BLUE += color_modifier
-            //print("Part 4 \(RED) \(GREEN) \(BLUE)")
-        } else if (count > 0.67 && count < 0.83) {
-            RED += color_modifier
-            GREEN -= color_modifier
-            BLUE -= color_modifier
-            //print("Part 5 \(RED) \(GREEN) \(BLUE)")
-        } else if (count > 0.83 && count < 0.995) {
-            RED += color_modifier / 2
-            GREEN += color_modifier / 2
-            BLUE -= color_modifier / 2
-            //print("Part 6 \(RED) \(GREEN) \(BLUE)")
-        }
-        
-        self.view.backgroundColor = UIColor.init(red: RED, green: GREEN, blue: BLUE, alpha: 1)
-        
         time_display.text = getCptTime(base: base, digits: digits)
         
         let factor = 1 / getCptFactor(base: base, digits: digits)
         conversion_ratio.text = String(Double(round(1000*factor)/1000)) + " seconds"
-        latestTimeUpdated = currentTime
     }
-    
-
 }
-
